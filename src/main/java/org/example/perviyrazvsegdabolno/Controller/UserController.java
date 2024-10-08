@@ -14,25 +14,31 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // POST создаем entity
     @PostMapping
     public User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
+    // GET ищем по id
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        Optional<User> existingUser = userService.getUserById(id);
-            User currentUser = existingUser.get();
-            currentUser.setName(user.getName());
-            currentUser.setEmail(user.getEmail());
-            return userService.createUser(currentUser);
+    //GET ищем по email
+    @GetMapping
+    public Optional<User> getUserByEmail(@RequestParam String email) {
+        return userService.getUserByEmail(email);
     }
 
+    //PUT обновляем данные по id
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        return userService.UpdateUser(id,user.getName(),user.getEmail());
+    }
+
+    //Удаляем по id
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
